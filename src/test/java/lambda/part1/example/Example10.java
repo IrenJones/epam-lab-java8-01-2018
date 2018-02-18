@@ -31,8 +31,10 @@ public class Example10 extends Thread {
         TimeUnit.SECONDS.sleep(7);
     }
 
+    @SuppressWarnings("Convert2MethodRef")
     private Predicate<String> getPredicateEnclosingThis() {
-        Predicate<String> enclosingThis = string -> strings.contains(string);
+        List<String> localStrings = strings;
+        Predicate<String> enclosingThis = string -> localStrings.contains(string);
         return enclosingThis;
     }
 

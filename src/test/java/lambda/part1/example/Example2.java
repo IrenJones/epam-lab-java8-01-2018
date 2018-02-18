@@ -26,7 +26,9 @@ public class Example2 {
     @Test
     public void statementLambdaImplementation() {
         // FIXME вывод типов
-        Summator<Integer> summator = (left, right) -> {
+        Summator<Integer> summator = (Integer left, Integer right) -> {
+            System.out.println("");
+            new Thread().start();
             return left + right;
         };
 
@@ -77,10 +79,12 @@ public class Example2 {
         Summator<Integer> summator = Example2::sum;
 
         process(summator);
-//        process((left, right) -> Example2.sum(left, right)); // FIXME вывод типов не работает
-        process((Integer left, Integer right) -> Example2.sum(left, right));
-        process((left, right) -> Example2.sum((Integer)left, (Integer)right));
-        Example2.<Integer>process((left, right) -> Example2.sum(left, right));
+
+        // FIXME вывод типов
+//        process((left, right) -> Example2.sum(left, right));
+//        process((Integer left, Integer right) -> Example2.sum(left, right));
+//        process((left, right) -> Example2.sum((Integer)left, (Integer)right));
+//        Example2.<Integer>process((left, right) -> Example2.sum(left, right));
     }
 
     private static <T extends Number> void process(Summator<T> summator) {

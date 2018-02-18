@@ -25,22 +25,18 @@ public class Example9 {
     @Test
     public void serializeTree() {
         Set<Person> treeSet = new TreeSet<>(
-                (Comparator<Person> & Serializable)(left, right) -> Integer.compare(left.getAge(), right.getAge()));
-//        Set<Person> treeSet = new TreeSet<>(new ComparatorPersonsByLastName());
+                (Comparator<? super Person> & Serializable)(left, right) -> left.getLastName().compareTo(right.getLastName()));
         treeSet.add(new Person("Иван", "Мельников", 33));
         treeSet.add(new Person("Алексей", "Игнатенко", 1));
         treeSet.add(new Person("Сергей", "Лопатин", 3));
 
-        System.out.println(treeSet);
+//        System.out.println(treeSet);
 
         // TODO сериализовать дерево в массив байт
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(treeSet);
-
-            byte[] bytes = outputStream.toByteArray();
-            System.out.println(new String(bytes));
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(out)) {
+            oos.writeObject(treeSet);
+            System.out.println(new String(out.toByteArray()));
         } catch (IOException e) {
             e.printStackTrace();
         }

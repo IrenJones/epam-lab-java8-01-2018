@@ -10,7 +10,7 @@ public class Example6 {
     @Test
     public void runNormalRunnable() {
         Runnable r = () -> {
-//            Thread.sleep(100);
+//                Thread.sleep(100);
         };
 //        r.run();
     }
@@ -30,13 +30,13 @@ public class Example6 {
     }
 
     @Test
-    public void callNormalCallable() {
+    public void callNormalCallable() throws Exception {
         Callable<Integer> callable = () -> {
-//            Thread.sleep(100);
+            Thread.sleep(100);
             return 42;
         };
 
-//        callable.call();
+        callable.call();
     }
 
     @Test

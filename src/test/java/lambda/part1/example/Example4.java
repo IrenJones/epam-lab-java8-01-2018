@@ -17,11 +17,11 @@ public class Example4 {
     @Test
     public void closureAnonymousClass() throws Exception {
         // FIXME заменить на effectively final
-        final Person person = new Person("Иван", "Мельников", 33);
+        Person person = new Person("Иван", "Мельников", 33);
 
         String firstName = performInCurrentThread(new Callable<String>() {
             @Override
-            public String call() throws Exception {
+            public String call() {
                 return person.getFirstName();
             }
         });
@@ -83,7 +83,7 @@ public class Example4 {
     public void closureThisReferenceByExpressionLambda() throws Exception {
         person = new Person("Иван", "Мельников", 33);
 
-        String firstName = performInCurrentThread(() -> person.getFirstName());
+        String firstName = performInCurrentThread(() -> this.person.getFirstName());
         assertEquals("Иван", firstName);
 
         // FIXME код в старом стиле (на анонимном классе)
@@ -93,7 +93,7 @@ public class Example4 {
             private final Example4 hiddenReference = Example4.this;
 
             @Override
-            public String call() throws Exception {
+            public String call() {
                 return hiddenReference.person.getFirstName();
             }
         });
@@ -112,7 +112,7 @@ public class Example4 {
             private final Person hiddenReference = Example4.this.person;
 
             @Override
-            public String call() throws Exception {
+            public String call() {
                 return hiddenReference.getFirstName();
             }
 
@@ -124,12 +124,12 @@ public class Example4 {
     public void overwriteReferenceClosuredByExpressionLambdaAfterUsing() throws Exception {
         person = new Person("Иван", "Мельников", 33);
 
-        String firstName = performInCurrentThread(() -> person.getFirstName());
+        String firstName = performInCurrentThread(() -> this.person.getFirstName());
 
         person = new Person("Алексей", "Игнатенко", 25);
 
         // FIXME какое имя следует ожидать?
-        assertEquals("...", firstName);
+        assertEquals("Иван", firstName);
     }
 
     @Test
@@ -141,7 +141,7 @@ public class Example4 {
         person = new Person("Алексей", "Игнатенко", 25);
 
         // FIXME какое имя следует ожидать?
-        assertEquals("...", firstName);
+        assertEquals("Иван", firstName);
     }
 
     private Callable<String> performLaterFromCurrentThread(Callable<String> task) {
@@ -155,7 +155,7 @@ public class Example4 {
     public void overwriteReferenceClosuredByExpressionLambdaBeforeUsing() throws Exception {
         person = new Person("Иван", "Мельников", 33);
 
-        Callable<String> delayedTask = performLaterFromCurrentThread(() -> person.getFirstName());
+        Callable<String> delayedTask = performLaterFromCurrentThread(() -> this.person.getFirstName());
 
         person = new Person("Алексей", "Игнатенко", 25);
 

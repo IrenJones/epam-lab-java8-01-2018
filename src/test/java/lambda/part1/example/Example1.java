@@ -120,7 +120,7 @@ public class Example1 {
     public void createMapFromListUsingForeach() {
         List<Person> persons = Arrays.asList(getPersons());
 
-        Map<String, Person> personByLastName = new HashMap<>();
+        Map<String, Person> personByLastName = new HashMap<>(persons.size());
         for (Person person : persons) {
             personByLastName.put(person.getLastName(), person);
         }
